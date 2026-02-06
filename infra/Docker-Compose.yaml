@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:15
+    container_name: guisamp_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: api_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    restart: always
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ../:/app
+
+volumes:
+  db_data:
+    name: guisamp_api_data
