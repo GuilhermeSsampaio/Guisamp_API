@@ -6,9 +6,7 @@ from auth.security.tokens import create_access_token
 from auth.schemas.user_schema import UserResponse
 from auth.models.auth_provider import AuthProvider
 
-def get_user_by_email(session: Session, email:str) -> UserResponse | None:
-    statement = select(User).where(User.email == email)
-    return session.exec(statement).first()
+from auth.repository.crud import get_user_by_email
 
 def create_user(session: Session, user_data: UserRegister) -> UserResponse:
     hashed_pw = hash_password(user_data.password)
@@ -31,6 +29,7 @@ def create_user(session: Session, user_data: UserRegister) -> UserResponse:
     session.commit()
     
     return user
+
 
 def authenticate_user(session: Session, email: str, password:str) -> User | None:
     user = get_user_by_email(session, email)

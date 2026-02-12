@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from auth.security.tokens import decode_token
 
+
 http_bearer = HTTPBearer()
 
 def current_user(credentials: HTTPAuthorizationCredentials = Depends(http_bearer)):
@@ -14,3 +15,4 @@ def current_user(credentials: HTTPAuthorizationCredentials = Depends(http_bearer
         )
     
     return payload["sub"]
+

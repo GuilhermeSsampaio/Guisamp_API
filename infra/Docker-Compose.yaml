@@ -19,6 +19,8 @@ services:
     restart: always
     env_file:
       - ../.env
+    environment:
+      - DATABASE_URL=postgresql://postgres:root@db:5432/api_db
     ports:
       - "8000:8000"
     depends_on:

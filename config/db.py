@@ -1,6 +1,9 @@
 import os
 from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine, Session
+from auth.models.user import User
+from auth.models.auth_provider import AuthProvider
+from config.models import setup_models
 
 load_dotenv()
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -13,12 +16,15 @@ engine = create_engine(
 
 )
 
-
 def create_db_and_tables():
     """"
     Cria as tabelas conforme os models definidos
     Deve ser chamada uma vez ao iniciar o projeto ou atualizar modelos
     """
+    # Garante que todos os modelos foram lidos e registrados no metadata
+    setup_models()
+    
+    # Cria as tabelas baseadas no que foi registrado
     SQLModel.metadata.create_all(engine)
 
 def get_session():

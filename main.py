@@ -1,31 +1,22 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from config.db import create_db_and_tables
-from auth.models.user import User
-from auth.models.auth_provider import AuthProvider
-from auth.routes.auth_routes import router as auth_router
+from config.settings import API_TITLE, API_VERSION
+from config.middlewares import setup_middlewares
+from config.routers import setup_routers
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     create_db_and_tables()
     yield
     
-app = FastAPI(title="API unificada para projetos pessoais - GuiSamp",
-              version="2.0",
+app = FastAPI(title=API_TITLE,
+              version=API_VERSION,
               lifespan=lifespan
               )
 
-# mudar pra produção esses valores
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"] ,
-    allow_headers=["*"]
-)
-
-app.include_router(auth_router)
+setup_middlewares(app)
+setup_routers(app)
 
 @app.get("/")
 async def root():

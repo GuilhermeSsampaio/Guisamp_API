@@ -2,7 +2,7 @@
 
 API centralizada para autenticação e gerenciamento de usuários, pensada para servir múltiplos projetos pessoais de portfólio. Permite login via senha e integração futura com provedores como Google e GitHub.
 
----
+## Expansão futura de projetos pessoais
 
 ## ✨ Funcionalidades
 
