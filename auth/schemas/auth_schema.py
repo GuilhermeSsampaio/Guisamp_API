@@ -1,13 +1,13 @@
-from sqlmodel import SQLModel
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel, ConfigDict
 
-class UserRegister(SQLModel):
+class UserRegister(BaseModel):
     username:str
     email: EmailStr
     password:str
 
-class UserLogin(SQLModel):
+class UserLogin(BaseModel):
     email: EmailStr
     password:str
+
 
     

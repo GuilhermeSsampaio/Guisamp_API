@@ -1,5 +1,7 @@
-from sqlmodel import SQLModel
+from pydantic import BaseModel, ConfigDict
 
-class TokenResponse(SQLModel):
+class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+    model_config = ConfigDict(from_attributes=True)

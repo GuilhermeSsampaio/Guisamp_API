@@ -8,6 +8,8 @@ def setup_models():
     from auth.models.user import User  # noqa: F401
     from auth.models.auth_provider import AuthProvider  # noqa: F401
     
-    # Futuro: Módulo CookAI
+    # Módulo CookAI
+    from projects.cookAi.models.recipe import Recipe
+    from projects.cookAi.models.cookai_user import CookAiUser
     
   
