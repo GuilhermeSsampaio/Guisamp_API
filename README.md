@@ -1,85 +1,181 @@
-# guisamp_api
+# 🚀 GuiSamp API - Plataforma Multi-Projetos
 
-API centralizada para autenticação e gerenciamento de usuários, pensada para servir múltiplos projetos pessoais de portfólio. Permite login via senha e integração futura com provedores como Google e GitHub.
+> **API centralizada com arquitetura modular para portfólio profissional**
 
-## Expansão futura de projetos pessoais
+Plataforma robusta que combina autenticação unificada com múltiplos projetos independentes. Cada projeto possui seu próprio frontend **React PWA**, demonstrando full-stack development e boas práticas de arquitetura.
 
-## ✨ Funcionalidades
+## 🏗️ Arquitetura
 
-- Registro e login de usuários com JWT
-- Suporte a múltiplos provedores de autenticação (senha, Google, GitHub, etc.)
-- Endpoints protegidos por Bearer Token
-- Estrutura modular para fácil expansão
+```
+📁 auth/           → Sistema de autenticação compartilhado (JWT + OAuth)
+📁 projects/       → Projetos modulares independentes
+  └── cookAi/      → Assistente culinário com IA
+📁 config/         → Configurações e middlewares centralizados
+📁 infra/         → Docker, CI/CD e infraestrutura
+```
 
-## 🚀 Tecnologias
+## 🎯 Projetos Implementados
+
+### 🍳 CookAI - Assistente Culinário Inteligente
+
+- **Web Scraping** automatizado de receitas
+- **Integração com Google Gemini AI** para processamento
+- **CRUD completo** com autorização por usuário
+- **PWA React** responsivo e offline-first
+- **Busca semântica** e categorização inteligente
+
+## ✨ Funcionalidades Técnicas
+
+### 🔐 Sistema de Autenticação
+
+- JWT com refresh tokens
+- OAuth2 (Google integrado)
+- Middleware de autorização customizado
+- Proteção CORS configurável
+
+### 🛠️ Arquitetura Clean Code
+
+- **Repository Pattern** para acesso a dados
+- **Dependency Injection** com FastAPI
+- **Type Safety** completo com Pydantic/SQLModel
+- **Separation of Concerns** rigorosa
+
+### 🔄 DevOps & Qualidade
+
+- Containerização completa (Docker + Compose)
+- Environment-based configuration
+- Estrutura preparada para CI/CD
+
+## 🚀 Stack Tecnológico
+
+**Backend:**
+
+- **FastAPI** (Python 3.11+) - API moderna e performática
+- **SQLModel** - ORM type-safe com Pydantic
+- **PostgreSQL** - Banco de dados robusto
+- **Google Gemini AI** - Processamento de linguagem natural
+
+**Frontend (por projeto):**
+
+- **React + Vite**
+- **PWA** (Progressive Web App)
+- **Bootstrap CSS** - Styling moderno
+
+**DevOps:**
+
+- **Docker & Docker Compose**
+- **Git workflow** com branches organizadas
+- **Environment Variables** para configuração
+
+## 🛠️ Instalação e Execução
+
+### 📋 Pré-requisitos
 
 - Python 3.11+
-- FastAPI
-- SQLModel
 - Docker & Docker Compose
+- Git
 
-## 🛠️ Como rodar
-
-### Local (venv)
-
-```bash
-python -m venv venv
-source venv/bin/activate  # ou venv\Scripts\activate no Windows
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### Docker
+### 🐳 Docker (Recomendado)
 
 ```bash
+# Clone o repositório
+git clone <url-do-repositório>
+cd guisamp_api
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com suas configurações
+
+# Suba os serviços
 docker compose -f infra/Docker-Compose.yaml up --build
+
+# A API estará disponível em http://localhost:8000
 ```
 
-## ⚙️ Variáveis de ambiente
-
-Crie um arquivo `.env` na raiz com, por exemplo:
-
-```
-DATABASE_URL=sqlite:///./db.sqlite3
-JWT_SECRET=umasecretforte
-JWT_ALGORITHM=HS256
-JWT_EXPIRES_IN=3600
-```
-
-## 🔑 Autenticação
-
-- `POST /auth/register` — Cria novo usuário
-- `POST /auth/login` — Retorna access token
-- Para acessar rotas protegidas, envie:
-  - Header: `Authorization: Bearer <token>`
-
-### Exemplo de uso (login)
+### 🔧 Desenvolvimento Local
 
 ```bash
-curl -X POST http://localhost:8000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "seu@email.com", "password": "suasenha"}'
+# Crie e ative o ambiente virtual
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Configure o banco de dados
+# Edite o .env para usar SQLite local se preferir
+
+# Execute a aplicação
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## 📁 Estrutura de pastas
+## 📁 Estrutura Detalhada
 
-- `auth/` — autenticação, schemas, serviços e rotas
-- `config/` — configurações (banco, segurança)
-- `infra/` — Dockerfile e compose
-- `routes/` — rotas gerais da API
-- `scripts/` — scripts utilitários
+```
+guisamp_api/
+├── auth/                    # Sistema de autenticação compartilhado
+│   ├── models/             # User, AuthProvider
+│   ├── schemas/            # Login, Register, Token schemas
+│   ├── services/           # Lógica de autenticação
+│   └── routes/             # Endpoints de auth
+├── projects/               # Projetos modulares
+│   └── cookAi/            # Assistente culinário
+│       ├── models/        # Recipe, CookAiUser
+│       ├── schemas/       # DTOs de entrada/saída
+│       ├── repository/    # CRUD operations
+│       ├── services/      # IA, scraping, web search
+│       └── routes/        # Endpoints específicos
+├── config/                # Configurações globais
+│   ├── db.py             # Setup do banco
+│   ├── settings.py       # Environment configs
+│   └── middlewares.py    # CORS, logging, etc
+└── infra/                # Infrastructure as Code
+    ├── Dockerfile
+    └── Docker-Compose.yaml
+```
 
-## 🗺️ Roadmap
+## 🎓 Propósito Educacional
 
-- [ ] Integração com Google OAuth
-- [ ] Integração com GitHub OAuth
-- [ ] Rate limiting
-- [ ] Logs estruturados
+Este projeto foi desenvolvido como **portfólio profissional** demonstrando:
+
+- ✅ **Clean Architecture** e **SOLID Principles**
+- ✅ **Microservices Pattern** (projetos independentes)
+- ✅ **API Design** seguindo REST e OpenAPI
+- ✅ **Database Design** com relacionamentos complexos
+- ✅ **Security Best Practices** (JWT, OAuth, CORS)
+- ✅ **DevOps Practices** (Docker, Environment Config)
+- ✅ **AI Integration** prática e funcional
+- ✅ **Full-Stack Development** (Backend + Frontend PWA)
 
 ## 🤝 Contribuindo
 
-Pull requests são bem-vindos! Sinta-se à vontade para propor melhorias ou abrir issues.
+Interessado em colaborar? Veja como:
+
+1. Fork o projeto
+2. Crie uma branch: `git checkout -b feature/nova-feature`
+3. Commit suas mudanças: `git commit -m 'Add: nova feature'`
+4. Push para a branch: `git push origin feature/nova-feature`
+5. Abra um Pull Request
+
+### 📋 Guidelines
+
+- Siga os padrões de código existentes
+- Adicione testes para novas features
+- Documente mudanças no README
+- Use commits semânticos
+
+## 📞 Contato
+
+**Desenvolvedor:** Guilherme Sampaio
+
+---
+
+⭐ **Se este projeto te ajudou, deixe uma estrela!**
 
 ## 📄 Licença
 
-Uso pessoal e educacional.
+Este projeto está sob licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
+
+_Desenvolvido com ❤️ como demonstração de habilidades técnicas e arquiteturais._
