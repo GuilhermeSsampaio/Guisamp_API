@@ -26,3 +26,9 @@ class RecipeResponse(BaseModel):
     
     # IMPORTANTE: Permite converter objeto do banco direto pra JSON
     model_config = ConfigDict(from_attributes=True)
+
+class ScrappingResponse(BaseModel):
+    title: str
+    content: str
+    font:str
+    link: str

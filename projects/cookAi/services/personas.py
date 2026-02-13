@@ -29,15 +29,14 @@ def make_web_search_prompt(query:str):
     Encontre receitas com base na seguinte especificação: {query}.
     Busque receitas populares e bem avaliadas na internet.
     Não invente receitas.
-    Retorne as receitas no seguinte formato JSON puro:
+    Retorne as receitas no seguinte formato:
     [
         {{
             "title": "Título da receita",
             "font": "Fonte da receita",
             "link": "Link da receita",
-            "description": "Descrição ou instruções da receita"
+            "content": "Descrição ou instruções da receita"
         }},
-        ...
     ]
     """
     return search_persona

@@ -52,7 +52,7 @@ def scrap_recipe(url: str):
         
         total_time = time.time() - start_time
         print(f"Tempo total de execução: {total_time:.2f} segundos")
-        print(f"Receita extraída: {response.text}")
+        # print(f"Receita extraída: {response.text}")
         
         title = extract_title(response.text)
         return {
