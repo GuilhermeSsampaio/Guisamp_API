@@ -5,7 +5,8 @@ from urllib.parse import urlparse
 import cloudscraper
 from projects.cookAi.services.personas import cookai_client, make_scrapping_prompt
 from projects.cookAi.services.extract_fields import extract_title
-from projects.cookAi.settings.security import GEMINI_MODEL 
+from projects.cookAi.settings.security import GEMINI_MODEL
+
 
 def scrap_recipe(url: str):
     """
@@ -20,7 +21,7 @@ def scrap_recipe(url: str):
     try:
         # Fazendo req http
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
 
         response = scraper.get(url, headers=headers, timeout=10)
@@ -43,30 +44,29 @@ def scrap_recipe(url: str):
 
         model_start_time = time.time()
         response = cookai_client.models.generate_content(
-            model=GEMINI_MODEL,
-            contents= prompt_content
+            model=GEMINI_MODEL, contents=prompt_content
         )
 
         model_time = time.time() - model_start_time
         print(f"Tempo de processamento do modelo: {model_time:.2f} segundos")
-        
+
         total_time = time.time() - start_time
         print(f"Tempo total de execução: {total_time:.2f} segundos")
         # print(f"Receita extraída: {response.text}")
-        
+
         title = extract_title(response.text)
         return {
             "title": title,
             "content": response.text,
             "font": font_of_url,
-            "link": url
+            "link": url,
         }
     except Exception as error:
         return {"error": f"Failed to scrape recipe from {url}: {error}"}
 
 
-# url_teste = "https://www.tudogostoso.com.br/receita/23-bolo-de-cenoura.html"    
-# url_teste = "https://www.receitasnestle.com.br/receitas/bolo-de-limao-de-liquidificador"    
+# url_teste = "https://www.tudogostoso.com.br/receita/23-bolo-de-cenoura.html"
+# url_teste = "https://www.receitasnestle.com.br/receitas/bolo-de-limao-de-liquidificador"
 
 # # ALTERAÇÃO AQUI: Imprima o resultado da função
 # resultado = scrap_recipe(url_teste)

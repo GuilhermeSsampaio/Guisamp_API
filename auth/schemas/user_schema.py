@@ -2,6 +2,7 @@ from uuid import UUID
 from datetime import datetime
 from pydantic import EmailStr, BaseModel, ConfigDict
 
+
 class UserResponse(BaseModel):
     id: UUID
     username: str

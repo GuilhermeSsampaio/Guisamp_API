@@ -8,34 +8,28 @@ from auth.security.dependencies import current_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
+
 @router.post("/register", response_model=UserResponse)
 def register(user_data: UserRegister, session: SessionDep):
     try:
         user = create_user(session, user_data)
         return user
     except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-    
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
 @router.post("/login", response_model=TokenResponse)
 def login(credentials: UserLogin, session: SessionDep):
-    token = login_user(
-        session, credentials.email, credentials.password
-    )
+    token = login_user(session, credentials.email, credentials.password)
 
     if not token:
         raise HTTPException(
-            status_code = status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciais inválidas"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas"
         )
-    
+
     return {"access_token": token, "token_type": "bearer"}
 
+
 @router.get("/protected")
-def protected_route(user_id:str = Depends(current_user)):
-    return {
-        "message": "rota protegida acessada",
-        "userid": user_id
-    }
+def protected_route(user_id: str = Depends(current_user)):
+    return {"message": "rota protegida acessada", "userid": user_id}

@@ -9,4 +9,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
-GOOGLE_REDIRECT_URI = os.getenv("REDIRECT_URI", "http://localhost:8000/auth/google/callback") 
+GOOGLE_REDIRECT_URI = os.getenv(
+    "REDIRECT_URI", "http://localhost:8000/auth/google/callback"
+)

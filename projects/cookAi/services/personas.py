@@ -9,6 +9,7 @@ load_dotenv()
 
 cookai_client = genai.Client(api_key=GOOGLE_API_KEY)
 
+
 def make_scrapping_prompt(text: str, font_of_url: str):
     scrap_persona = f"""
             Resuma essa receita, passando os ingredientes, tempo de forno e o modo de preparo:
@@ -23,8 +24,9 @@ def make_scrapping_prompt(text: str, font_of_url: str):
             """
     return scrap_persona
 
-def make_web_search_prompt(query:str):
-    
+
+def make_web_search_prompt(query: str):
+
     search_persona = f"""
     Encontre receitas com base na seguinte especificação: {query}.
     Busque receitas populares e bem avaliadas na internet.

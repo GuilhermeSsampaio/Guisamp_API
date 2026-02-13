@@ -10,10 +10,7 @@ def main():
     with Session(engine) as session:
 
         # Criar usuário
-        user = User(
-            username="gui",
-            email="gui@email.com"
-        )
+        user = User(username="gui", email="gui@email.com")
 
         session.add(user)
         session.commit()
@@ -23,9 +20,7 @@ def main():
 
         # Criar provider
         provider = AuthProvider(
-            user_id=user.id,
-            provider="password",
-            password_hash="fake_hash"
+            user_id=user.id, provider="password", password_hash="fake_hash"
         )
 
         session.add(provider)

@@ -8,6 +8,7 @@ from auth.models.auth_provider import AuthProvider
 
 from auth.repository.crud import get_user_by_email
 
+
 def create_user(session: Session, user_data: UserRegister) -> UserResponse:
     hashed_pw = hash_password(user_data.password)
 
@@ -21,25 +22,22 @@ def create_user(session: Session, user_data: UserRegister) -> UserResponse:
     session.refresh(user)
 
     provider = AuthProvider(
-        user_id = user.id,
-        provider="password",
-        password_hash=hashed_pw
+        user_id=user.id, provider="password", password_hash=hashed_pw
     )
     session.add(provider)
     session.commit()
-    
+
     return user
 
 
-def authenticate_user(session: Session, email: str, password:str) -> User | None:
+def authenticate_user(session: Session, email: str, password: str) -> User | None:
     user = get_user_by_email(session, email)
 
     if not user:
         return None
-    
+
     statement = select(AuthProvider).where(
-        AuthProvider.user_id == user.id,
-        AuthProvider.provider == "local"
+        AuthProvider.user_id == user.id, AuthProvider.provider == "local"
     )
 
     provider = session.exec(statement).first()
@@ -48,7 +46,7 @@ def authenticate_user(session: Session, email: str, password:str) -> User | None
 
     if not verify_password(password, provider.password_hash):
         return None
-    
+
     return user
 
 
@@ -59,4 +57,3 @@ def login_user(session: Session, email: str, password: str) -> str | None:
         return None
 
     return create_access_token({"sub": str(user.id)})
-

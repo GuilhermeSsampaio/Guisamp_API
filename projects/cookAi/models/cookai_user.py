@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from auth.models.user import User
     from cookAi.models.recipe import Recipe
 
+
 class CookAiUser(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
 
