@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 
 API_TITLE = "API unificada para projetos pessoais - GuiSamp"
 API_VERSION = "2.0"

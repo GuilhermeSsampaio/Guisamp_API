@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session
-
-from config.db import get_session
+from config.db import SessionDep
 from auth.schemas.auth_schema import UserRegister, UserLogin
 from auth.schemas.user_schema import UserResponse
 from auth.schemas.token_schema import TokenResponse
@@ -11,7 +9,7 @@ from auth.security.dependencies import current_user
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register", response_model=UserResponse)
-def register(user_data: UserRegister, session: Session = Depends(get_session)):
+def register(user_data: UserRegister, session: SessionDep):
     try:
         user = create_user(session, user_data)
         return user
@@ -22,7 +20,7 @@ def register(user_data: UserRegister, session: Session = Depends(get_session)):
         )
     
 @router.post("/login", response_model=TokenResponse)
-def login(credentials: UserLogin, session: Session = Depends(get_session)):
+def login(credentials: UserLogin, session: SessionDep):
     token = login_user(
         session, credentials.email, credentials.password
     )

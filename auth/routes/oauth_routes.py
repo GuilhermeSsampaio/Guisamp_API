@@ -1,7 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
-from sqlmodel import Session
-
-from config.db import get_session
+from fastapi import APIRouter, HTTPException, Request
+from config.db import SessionDep
 from config.settings import  GOOGLE_REDIRECT_URI
 from auth.services.oauth_service import get_or_create_oauth_user
 from auth.security.tokens import create_access_token
@@ -25,7 +23,7 @@ async def google_login(request: Request):
     return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 @router.get("/callback", response_model=TokenResponse)
-async def google_callback(request: Request, session: Session = Depends(get_session)):
+async def google_callback(request: Request, session: SessionDep):
     """Recebe o retorno do Google, cria o usuário se necessário e gera token JWT"""
     try:
         token = await oauth.google.authorize_access_token(request)
