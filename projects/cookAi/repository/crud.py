@@ -34,3 +34,11 @@ def list_recipes_by_profile_id(session: Session, profile_id: UUID) -> List[Recip
         select(Recipe).where(Recipe.cookai_user_id == profile_id)
     ).all()
     return recipes
+
+def get_recipe_by_id(session: Session, recipe_id: int) -> Recipe:
+    recipe = session.get(Recipe, recipe_id)
+    
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Receita não encontrada")
+    
+    return recipe

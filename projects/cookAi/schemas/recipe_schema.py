@@ -14,8 +14,6 @@ class RecipeRegister(BaseModel):
 class RecipeUpdate(BaseModel):
     title: Optional[str] = None
     content: Optional[str] = None
-    font: Optional[str] = None
-    link: Optional[str] = None
 
 
 class RecipeResponse(BaseModel):

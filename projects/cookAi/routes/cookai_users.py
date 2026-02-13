@@ -15,6 +15,7 @@ from projects.cookAi.models.cookai_user import CookAiUser
 from projects.cookAi.models.recipe import Recipe
 from projects.cookAi.repository.crud import (
     get_cookai_user_by_id,
+    get_recipe_by_id,
     list_cookai_users,
     list_recipes_by_profile_id,
 )
@@ -22,7 +23,7 @@ from projects.cookAi.schemas.cookai_user_schema import (
     CookAiUserResponse,
     CookAiUserUpdate,
 )
-from projects.cookAi.schemas.recipe_schema import RecipeRegister, RecipeResponse
+from projects.cookAi.schemas.recipe_schema import RecipeRegister, RecipeResponse, RecipeUpdate
 
 router = APIRouter()
 
@@ -167,11 +168,41 @@ def get_my_recipes(session: SessionDep, user_id: str = Depends(current_user)):
     return recipes
 
 
+
+
 @router.put("/update_recipe/{recipe_id}", response_model=RecipeResponse)
-def update_recipe(session: SessionDep, user_id: str = Depends(current_user)):
-    pass
+def update_recipe(recipe_data: RecipeUpdate, session: SessionDep, recipe_id: int, user_id: str = Depends(current_user)):
+    user_uuid = UUID(user_id)
+    
+    cookai_user_profile = get_cookai_user_by_id(session, user_uuid)
+    recipe = get_recipe_by_id(session, recipe_id)
+
+    if recipe.cookai_user_id != cookai_user_profile.id:
+        raise HTTPException(status_code=403, detail="Você não possui permissão de editar esta receita")
+
+    if recipe_data.title is not None:
+        recipe.title = recipe_data.title
+    
+    if recipe_data.content is not None:
+        recipe.content = recipe_data.content
+
+    session.add(recipe)
+    session.commit()
+    session.refresh(recipe)
+
+    return recipe
 
 
 @router.delete("/delete_recipe/{recipe_id}")
-def delete_recipe(session: SessionDep, user_id: str = Depends(current_user)):
-    pass
+def delete_recipe(session: SessionDep, recipe_id: int, user_id: str = Depends(current_user)):
+    user_uuid = UUID(user_id)
+
+    cookai_user_profile = get_cookai_user_by_id(session, user_uuid)
+    recipe = get_recipe_by_id(session, recipe_id)
+    
+    if recipe.cookai_user_id != cookai_user_profile.id:
+        raise HTTPException(status_code=403, detail="Você não possui permissão de excluir esta receita")
+    
+    session.delete(recipe)
+    session.commit()
+    return {"message": f"Receita {recipe.title} excluída com sucesso" }
