@@ -8,8 +8,11 @@ if TYPE_CHECKING:
 
 class Recipe(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
-    content: str
     title: str
+    content: str
+    font:str
+    link:str
+    
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     
     cookai_user_id: UUID = Field(foreign_key="cookaiuser.id")

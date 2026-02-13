@@ -15,6 +15,7 @@ from sqlalchemy.orm import joinedload
 
 from projects.cookAi.models.cookai_user import CookAiUser
 from projects.cookAi.schemas.cookai_user_schema import CookAiUserResponse, CookAiUserUpdate
+from projects.cookAi.schemas.recipe_schema import RecipeResponse
 
 router = APIRouter()
 
@@ -127,18 +128,18 @@ def update_profile(
         premium_member=cookai_profile.premium_member
     )
 
-@router.post("/save_Recipe")
-def save_recipe():
+@router.post("/save_Recipe", response_model=RecipeResponse)
+def save_recipe(user_id:str = Depends(current_user),):
     pass
 
-@router.get("my_recipes")
-def get_my_recipes():
+@router.get("my_recipes", response_model=List[RecipeResponse])
+def get_my_recipes(session: SessionDep, user_id:str = Depends(current_user)):
     pass
 
-@router.put("/update_recipe/{recipe_id}")
-def update_recipe():
+@router.put("/update_recipe/{recipe_id}", response_model=RecipeResponse)
+def update_recipe(session: SessionDep, user_id:str = Depends(current_user)):
     pass
 
 @router.delete("/delete_recipe/{recipe_id}")
-def delete_recipe():
+def delete_recipe(session:SessionDep, user_id:str = Depends(current_user)):
     pass

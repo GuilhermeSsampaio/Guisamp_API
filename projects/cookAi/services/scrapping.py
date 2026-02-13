@@ -3,7 +3,9 @@ from bs4 import BeautifulSoup
 from google import genai
 from urllib.parse import urlparse
 import cloudscraper
-from projects.cookAi.services.cookai import cookai, make_prompt 
+from projects.cookAi.services.personas import cookai_client, make_scrapping_prompt
+from projects.cookAi.services.extract_fields import extract_title
+from projects.cookAi.settings.security import GEMINI_MODEL 
 
 def scrap_recipe(url: str):
     """
@@ -37,11 +39,11 @@ def scrap_recipe(url: str):
         conversion_time = time.time() - start_time
         print(f"Tempo de conversão: {conversion_time:.2f} segundos")
 
-        prompt_content = make_prompt(text, font_of_url)
+        prompt_content = make_scrapping_prompt(text, font_of_url)
 
         model_start_time = time.time()
-        response = cookai.models.generate_content(
-            model="gemini-2.5-flash",
+        response = cookai_client.models.generate_content(
+            model=GEMINI_MODEL,
             contents= prompt_content
         )
 
@@ -52,8 +54,13 @@ def scrap_recipe(url: str):
         print(f"Tempo total de execução: {total_time:.2f} segundos")
         print(f"Receita extraída: {response.text}")
         
-        return response.text
-
+        title = extract_title(response.text)
+        return {
+            "title": title,
+            "content": response.text,
+            "font": font_of_url,
+            "link": url
+        }
     except Exception as error:
         return {"error": f"Failed to scrape recipe from {url}: {error}"}
 
