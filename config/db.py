@@ -27,8 +27,9 @@ def create_db_and_tables():
 
     should_reset = os.getenv("RESET_BD", "False")
 
-    if should_reset:
+    if should_reset == True:
         SQLModel.metadata.drop_all(engine)
+
     # Cria as tabelas baseadas no que foi registrado
     SQLModel.metadata.create_all(engine)
 
