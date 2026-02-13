@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, APIRouter
 
 from config.db import SessionDep
@@ -12,8 +13,8 @@ def scraper_recipes(url:str):
     scrapping_result = scrap_recipe(url)
     return scrapping_result
 
-@router.post("/search_web")
-def search_web(query):
+@router.post("/search_web", response_model=List[ScrappingResponse])
+def search_web(query:str):
     recipes = search_recipes_from_web(query)
     return recipes
 

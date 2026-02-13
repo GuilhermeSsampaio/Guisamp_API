@@ -35,7 +35,11 @@ def make_web_search_prompt(query:str):
             "title": "Título da receita",
             "font": "Fonte da receita",
             "link": "Link da receita",
-            "content": "Descrição ou instruções da receita"
+            "content": "Resuma cada receita, passando os ingredientes, tempo de forno e o modo de preparo,
+            Caso não tenha o tempo de forno indique o recomendado.
+            Use títulos de seção para separar os ingredientes do modo de preparo.
+            O título da receita deve ser o primeiro item do resumo e deve usar heading 1.
+    "
         }},
     ]
     """

@@ -29,6 +29,6 @@ class RecipeResponse(BaseModel):
 
 class ScrappingResponse(BaseModel):
     title: str
-    content: str
     font:str
     link: str
+    content: str

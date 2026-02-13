@@ -11,8 +11,8 @@ def search_recipes_from_web(query):
     )
     try:
         raw_text = response.text.strip()
-        # print("Receitas extraídas \n")
-        # print(raw_text)
+        print("Receitas extraídas \n")
+        print(raw_text)
         
         start_index = raw_text.find('[')
         end_index = raw_text.rfind(']')
