@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter
 
+from config.db import SessionDep
+
 router = APIRouter()
 
 @router.post("/scrap")
@@ -11,12 +13,9 @@ def search_web():
     pass
 
 
-@router.get("/list")
-def list_recipes():
+@router.get("/list_public_recipes")
+def list_public_recipes():
     pass
 
 
-@router.get("/get_recipe/{recipe_id}")
-def get_recipe_by_id():
-    pass
 

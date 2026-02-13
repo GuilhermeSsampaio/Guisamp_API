@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 from uuid import UUID
 from typing import Optional
 
@@ -7,6 +7,8 @@ class CookAiUserUpdate(BaseModel):
 
 class CookAiUserResponse(BaseModel):
     id: UUID
+    username:str
+    email:EmailStr
     user_id: UUID
     bios: Optional[str] = None
     premium_member: bool

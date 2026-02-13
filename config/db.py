@@ -1,3 +1,4 @@
+from math import e
 import os
 from typing import Annotated
 from dotenv import load_dotenv
@@ -24,6 +25,10 @@ def create_db_and_tables():
     # Garante que todos os modelos foram lidos e registrados no metadata
     setup_models()
     
+    should_reset = os.getenv("RESET_BD", "False")
+
+    if should_reset:
+        SQLModel.metadata.drop_all(engine)
     # Cria as tabelas baseadas no que foi registrado
     SQLModel.metadata.create_all(engine)
 
