@@ -1,5 +1,6 @@
 from uuid import UUID
 from fastapi import HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
 from auth.models.auth_provider import AuthProvider
@@ -28,10 +29,17 @@ def register_cookai_user(
     session: Session, user_data: UserRegister
 ) -> CookAiUserResponse:
     """Cria User base + AuthProvider + CookAiUser."""
-    user_base = User(username=user_data.username, email=user_data.email)
-    session.add(user_base)
-    session.commit()
-    session.refresh(user_base)
+    try:
+        user_base = User(username=user_data.username, email=user_data.email)
+        session.add(user_base)
+        session.commit()
+        session.refresh(user_base)
+    except IntegrityError:
+        session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email ou username já cadastrado",
+        )
 
     auth_provider = AuthProvider(
         user_id=user_base.id,

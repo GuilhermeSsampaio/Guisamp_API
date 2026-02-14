@@ -7,8 +7,8 @@ from typing import Optional
 class RecipeRegister(BaseModel):
     title: str
     content: str
-    font: Optional[str] = None
-    link: Optional[str] = None
+    font: str
+    link: str
 
 
 class RecipeUpdate(BaseModel):

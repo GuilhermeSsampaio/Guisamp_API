@@ -45,6 +45,7 @@ Plataforma robusta que combina autenticação unificada com múltiplos projetos 
 - Containerização completa (Docker + Compose)
 - Environment-based configuration
 - Estrutura preparada para CI/CD
+- **Testes automatizados** com pytest (100 testes)
 
 ## 🚀 Stack Tecnológico
 
@@ -109,6 +110,28 @@ pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+### 🧪 Testes
+
+```bash
+# Instale as dependências de teste
+pip install pytest httpx pytest-cov
+
+# Rodar todos os testes
+pytest tests/ -v
+
+# Apenas testes do módulo CookAi
+pytest tests/cookai/ -v
+
+# Apenas testes de autenticação compartilhada
+pytest tests/shared/ -v
+
+# Com relatório de cobertura (HTML)
+pytest tests/ --cov=auth --cov=projects --cov-report=html
+
+# Modo rápido (sem verbose)
+pytest tests/ -q
+```
+
 ## 📁 Estrutura Detalhada
 
 ```
@@ -123,8 +146,13 @@ guisamp_api/
 │       ├── models/        # Recipe, CookAiUser
 │       ├── schemas/       # DTOs de entrada/saída
 │       ├── repository/    # CRUD operations
+│       ├── helpers/       # Validações e conversores
 │       ├── services/      # IA, scraping, web search
 │       └── routes/        # Endpoints específicos
+├── tests/                 # Testes automatizados
+│   ├── conftest.py       # Fixtures globais (SQLite in-memory)
+│   ├── shared/           # Testes de auth e security
+│   └── cookai/           # Testes de rotas, services e CRUD
 ├── config/                # Configurações globais
 │   ├── db.py             # Setup do banco
 │   ├── settings.py       # Environment configs

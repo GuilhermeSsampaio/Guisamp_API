@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from config.db import SessionDep
 from auth.schemas.auth_schema import UserRegister, UserLogin
 from auth.schemas.user_schema import UserResponse
@@ -14,6 +15,11 @@ def register(user_data: UserRegister, session: SessionDep):
     try:
         user = create_user(session, user_data)
         return user
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email ou username já cadastrado",
+        )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
