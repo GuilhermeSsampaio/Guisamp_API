@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from config.settings import SECRET_KEY
+from config.settings import SECRET_KEY, HTTPS_ONLY
 
 
 def setup_middlewares(app: FastAPI):
@@ -17,5 +17,5 @@ def setup_middlewares(app: FastAPI):
         SessionMiddleware,
         secret_key=SECRET_KEY,
         same_site="lax",
-        https_only=False,
+        https_only=HTTPS_ONLY,
     )

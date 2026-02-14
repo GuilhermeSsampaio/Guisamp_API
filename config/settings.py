@@ -14,3 +14,4 @@ GOOGLE_REDIRECT_URI = os.getenv(
 )
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+HTTPS_ONLY = os.getenv("HTTPS_ONLY", "false").strip().lower() == "true"
