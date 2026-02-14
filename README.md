@@ -113,8 +113,6 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ### 🧪 Testes
 
 ```bash
-# Instale as dependências de teste
-pip install pytest httpx pytest-cov
 
 # Rodar todos os testes
 pytest tests/ -v

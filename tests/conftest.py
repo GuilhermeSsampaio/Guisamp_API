@@ -4,6 +4,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel.pool import StaticPool
 
 from main import app
+
 from config.db import get_session
 from config.models import setup_models
 
