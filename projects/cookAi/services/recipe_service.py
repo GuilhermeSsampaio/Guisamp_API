@@ -13,7 +13,9 @@ from projects.cookAi.repository.recipes_crud import (
 from projects.cookAi.schemas.recipe_schema import RecipeRegister, RecipeUpdate
 
 
-def save_recipe_for_user(session: Session, user_uuid: UUID, recipe_data: RecipeRegister) -> Recipe:
+def save_recipe_for_user(
+    session: Session, user_uuid: UUID, recipe_data: RecipeRegister
+) -> Recipe:
     """Cria uma receita vinculada ao perfil do usuário autenticado."""
     profile = get_profile_or_404(session, user_uuid)
 
@@ -34,7 +36,9 @@ def list_user_recipes(session: Session, user_uuid: UUID) -> list[Recipe]:
     return list_recipes_by_profile_id(session, profile.id)
 
 
-def update_user_recipe(session: Session, user_uuid: UUID, recipe_id: int, data: RecipeUpdate) -> Recipe:
+def update_user_recipe(
+    session: Session, user_uuid: UUID, recipe_id: int, data: RecipeUpdate
+) -> Recipe:
     """Atualiza uma receita. Valida que pertence ao usuário."""
     profile = get_profile_or_404(session, user_uuid)
     recipe = get_recipe_or_404(session, recipe_id)

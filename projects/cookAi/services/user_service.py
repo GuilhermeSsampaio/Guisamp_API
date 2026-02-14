@@ -8,17 +8,25 @@ from auth.schemas.auth_schema import UserRegister
 from auth.security.hashing import hash_password
 from auth.services.auth_service import login_user
 
-from projects.cookAi.helpers.profile_helpers import get_profile_or_404, to_cookai_response
+from projects.cookAi.helpers.profile_helpers import (
+    get_profile_or_404,
+    to_cookai_response,
+)
 from projects.cookAi.repository.cookai_users_crud import (
     create_cookai_user,
     get_cookai_user_by_user_id,
     list_cookai_users,
     update_cookai_user,
 )
-from projects.cookAi.schemas.cookai_user_schema import CookAiUserResponse, CookAiUserUpdate
+from projects.cookAi.schemas.cookai_user_schema import (
+    CookAiUserResponse,
+    CookAiUserUpdate,
+)
 
 
-def register_cookai_user(session: Session, user_data: UserRegister) -> CookAiUserResponse:
+def register_cookai_user(
+    session: Session, user_data: UserRegister
+) -> CookAiUserResponse:
     """Cria User base + AuthProvider + CookAiUser."""
     user_base = User(username=user_data.username, email=user_data.email)
     session.add(user_base)
@@ -66,7 +74,9 @@ def get_my_profile(session: Session, user_uuid: UUID) -> CookAiUserResponse:
     return to_cookai_response(profile)
 
 
-def edit_profile(session: Session, user_uuid: UUID, updates: CookAiUserUpdate) -> CookAiUserResponse:
+def edit_profile(
+    session: Session, user_uuid: UUID, updates: CookAiUserUpdate
+) -> CookAiUserResponse:
     """Atualiza o perfil do usuário autenticado."""
     profile = get_profile_or_404(session, user_uuid)
 

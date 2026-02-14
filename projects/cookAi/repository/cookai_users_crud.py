@@ -7,12 +7,12 @@ from projects.cookAi.models.cookai_user import CookAiUser
 
 
 def list_cookai_users(session: Session) -> List[CookAiUser]:
-    return session.exec(
-        select(CookAiUser).options(joinedload(CookAiUser.user))
-    ).all()
+    return session.exec(select(CookAiUser).options(joinedload(CookAiUser.user))).all()
 
 
-def get_cookai_user_by_user_id(session: Session, user_uuid: UUID) -> Optional[CookAiUser]:
+def get_cookai_user_by_user_id(
+    session: Session, user_uuid: UUID
+) -> Optional[CookAiUser]:
     """Busca perfil CookAi pelo user_id (da tabela User). Retorna None se não existir."""
     return session.exec(
         select(CookAiUser)

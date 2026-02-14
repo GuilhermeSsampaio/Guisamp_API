@@ -7,8 +7,15 @@ from auth.schemas.token_schema import TokenResponse
 from auth.security.dependencies import current_user
 from config.db import SessionDep
 
-from projects.cookAi.schemas.cookai_user_schema import CookAiUserResponse, CookAiUserUpdate
-from projects.cookAi.schemas.recipe_schema import RecipeRegister, RecipeResponse, RecipeUpdate
+from projects.cookAi.schemas.cookai_user_schema import (
+    CookAiUserResponse,
+    CookAiUserUpdate,
+)
+from projects.cookAi.schemas.recipe_schema import (
+    RecipeRegister,
+    RecipeResponse,
+    RecipeUpdate,
+)
 
 from projects.cookAi.services.user_service import (
     authenticate_cookai_user,

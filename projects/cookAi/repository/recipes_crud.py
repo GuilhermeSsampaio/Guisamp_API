@@ -11,9 +11,7 @@ def get_recipe_by_id(session: Session, recipe_id: int) -> Optional[Recipe]:
 
 
 def list_recipes_by_profile_id(session: Session, profile_id: UUID) -> List[Recipe]:
-    return session.exec(
-        select(Recipe).where(Recipe.cookai_user_id == profile_id)
-    ).all()
+    return session.exec(select(Recipe).where(Recipe.cookai_user_id == profile_id)).all()
 
 
 def create_recipe(session: Session, recipe: Recipe) -> Recipe:
