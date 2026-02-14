@@ -42,3 +42,26 @@ def get_recipe_by_id(session: Session, recipe_id: int) -> Recipe:
         raise HTTPException(status_code=404, detail="Receita não encontrada")
     
     return recipe
+
+
+def get_or_create_cookai_user(session: Session, user_uuid: UUID) -> CookAiUser:
+    """Busca o perfil CookAi pelo user_id. Se não existir, cria automaticamente."""
+    cookai_profile = session.exec(
+        select(CookAiUser)
+        .options(joinedload(CookAiUser.user))
+        .where(CookAiUser.user_id == user_uuid)
+    ).first()
+
+    if not cookai_profile:
+        cookai_profile = CookAiUser(user_id=user_uuid, premium_member=False)
+        session.add(cookai_profile)
+        session.commit()
+        session.refresh(cookai_profile)
+        # Carrega o relationship após criação
+        cookai_profile = session.exec(
+            select(CookAiUser)
+            .options(joinedload(CookAiUser.user))
+            .where(CookAiUser.id == cookai_profile.id)
+        ).first()
+
+    return cookai_profile

@@ -8,6 +8,7 @@ from config.models import setup_models
 
 load_dotenv()
 DATABASE_URL = os.environ.get("DATABASE_URL")
+RESET_DB = os.environ.get("RESET_DB", "False")
 
 engine = create_engine(
     DATABASE_URL,
@@ -25,9 +26,9 @@ def create_db_and_tables():
     # Garante que todos os modelos foram lidos e registrados no metadata
     setup_models()
 
-    should_reset = os.getenv("RESET_BD", "False")
+    should_reset = RESET_DB.strip().lower() == "true"
 
-    if should_reset == True:
+    if should_reset:
         SQLModel.metadata.drop_all(engine)
 
     # Cria as tabelas baseadas no que foi registrado

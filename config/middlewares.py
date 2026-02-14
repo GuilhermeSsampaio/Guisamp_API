@@ -13,4 +13,9 @@ def setup_middlewares(app: FastAPI):
         allow_headers=["*"],
     )
 
-    app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=SECRET_KEY,
+        same_site="lax",
+        https_only=False,
+    )

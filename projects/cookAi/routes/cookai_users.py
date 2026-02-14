@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from uuid import UUID
+from sqlmodel import select
 
 from auth.models.auth_provider import AuthProvider
 from auth.models.user import User
@@ -15,6 +16,7 @@ from projects.cookAi.models.cookai_user import CookAiUser
 from projects.cookAi.models.recipe import Recipe
 from projects.cookAi.repository.crud import (
     get_cookai_user_by_id,
+    get_or_create_cookai_user,
     get_recipe_by_id,
     list_cookai_users,
     list_recipes_by_profile_id,
@@ -103,6 +105,22 @@ def get_cookai_users(session: SessionDep):
     return results
 
 
+@router.get("/me", response_model=CookAiUserResponse)
+def get_my_profile(session: SessionDep, user_id: str = Depends(current_user)):
+    user_uuid = UUID(user_id)
+
+    cookai_user_profile = get_or_create_cookai_user(session, user_uuid)
+
+    return CookAiUserResponse(
+        id=cookai_user_profile.id,
+        user_id=cookai_user_profile.user_id,
+        username=cookai_user_profile.user.username,
+        email=cookai_user_profile.user.email,
+        bios=cookai_user_profile.bios,
+        premium_member=cookai_user_profile.premium_member,
+    )
+
+
 @router.put("/edit_profile", response_model=CookAiUserResponse)
 def update_profile(
     updates: CookAiUserUpdate, session: SessionDep, user_id: str = Depends(current_user)
@@ -132,7 +150,7 @@ def update_profile(
     )
 
 
-@router.post("/save_Recipe", response_model=RecipeResponse)
+@router.post("/save_recipe", response_model=RecipeResponse)
 def save_recipe(
     recipe_data: RecipeRegister,
     session: SessionDep,

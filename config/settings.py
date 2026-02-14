@@ -12,3 +12,5 @@ GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
 GOOGLE_REDIRECT_URI = os.getenv(
     "REDIRECT_URI", "http://localhost:8000/auth/google/callback"
 )
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
